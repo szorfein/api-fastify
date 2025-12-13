@@ -1,4 +1,7 @@
-module.exports = async function usersRouter(fastify, _) {
+const fp = require("fastify-plugin");
+
+// plugins are just async function
+async function usersRouter(fastify, _) {
   fastify.register(
     async function routes(child, opts) {
       child.get("/", async (req, res) => {
@@ -12,4 +15,10 @@ module.exports = async function usersRouter(fastify, _) {
     },
     { prefix: "users" },
   );
-};
+}
+
+module.exports = fp(usersRouter, {
+  name: "usersRouter",
+  fastify: "5.x",
+  decorators: { fastify: ["users"] },
+});

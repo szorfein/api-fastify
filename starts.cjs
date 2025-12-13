@@ -1,22 +1,13 @@
+// Declaration Orders:
+// 1. Plugin installed from npm
+// 2. Our plugins
+// 3. Decorator
+// 4. Hook
+// 5. Services, routes and so on...
+
 // Use CommonJS
 const fastify = require("fastify")({ logger: true });
 const usersRouter = require("./users-router.cjs");
-
-//
-// Fastify decorator - (The decorators API customizes core Fastify objects)
-// Decorator are like global variable?
-
-fastify.decorate("mySpecialProp", "root prop"); // [1]
-fastify.decorate("users", [
-  {
-    name: "Sam",
-    age: 23,
-  },
-  {
-    name: "Alice",
-    name: 17,
-  },
-]); // [1]
 
 //
 // Fastify plugins
@@ -31,29 +22,73 @@ function opts(parent) {
   };
 }
 
-fastify.register(async function myPlugin(plugin, opts) {
-  fastify.log.info(`Registered first plugin - ${opts.myPlugin.first}`);
-}, opts);
-
-fastify.register(usersRouter, { prefix: "v1" });
-fastify.register(
-  async function usersRouterV2(plugin, options) {
-    plugin.register(usersRouter);
-    plugin.delete("/users/:name", (req, res) => {
-      fastify.log.info(`get param ${req.params.name}`);
-      const userIndex = plugin.users.findIndex(
-        (user) => user.name === req.params.name,
-      );
-      plugin.users.splice(userIndex, 1);
-      res.send();
-    });
-  },
-  { prefix: "v2" },
-);
+// chaining with after()
+fastify
+  .register(async function myPlugin(_plugin, opts) {
+    fastify.log.info(`Registered first plugin - ${opts.myPlugin.first}`);
+  }, opts)
+  .register(usersRouter, { prefix: "v1" })
+  .register(
+    async function usersRouterV2(plugin, _options) {
+      plugin.register(usersRouter);
+      plugin.delete("/users/:name", (req, res) => {
+        const userIndex = plugin.users.findIndex(
+          (user) => user.name === req.params.name,
+        );
+        plugin.users.splice(userIndex, 1);
+        res.send();
+      });
+    },
+    { prefix: "v2" },
+  )
+  .after((err) => {
+    if (err) {
+      console.error(`There was an error loading '${err.message}`);
+    }
+  });
 
 fastify.ready().then(() => {
   fastify.log.info("All plugins are now registered");
   console.log(fastify.printRoutes());
+});
+
+//
+// Fastify decorator - (The decorators API customizes core Fastify objects)
+// Decorator are like global variable?
+
+fastify.decorate("mySpecialProp", "root prop"); // [1]
+fastify.decorate("users", [
+  {
+    name: "Sam",
+    age: 23,
+  },
+  {
+    name: "Alice",
+    age: 17,
+  },
+]); // [1]
+
+//
+// Fastify hooks - add them before listen and route
+//
+
+fastify.addHook("onRoute", function inspector(routeOptions) {
+  console.log(routeOptions);
+});
+
+// Trigger when a new plugin is registered - before called
+fastify.addHook("onRegister", function inspector(_plugin, _pluginOptions) {
+  console.log("Chapter 2 - plugin and boot process");
+});
+
+fastify.addHook("onReady", function preLoading(done) {
+  console.log("onReady");
+  done();
+});
+
+fastify.addHook("onClose", function manageClose(_instance, done) {
+  console.log("onClose");
+  done();
 });
 
 //
@@ -78,36 +113,13 @@ process.once("SIGINT", async function closeApp() {
 });
 
 //
-// Fastify hooks - add them before listen and route
-//
-
-fastify.addHook("onRoute", function inspector(routeOptions) {
-  console.log(routeOptions);
-});
-
-// Trigger when a new plugin is registered - before called
-fastify.addHook("onRegister", function inspector(plugin, pluginOptions) {
-  console.log("Chapter 2 - plugin and boot process");
-});
-
-fastify.addHook("onReady", function preLoading(done) {
-  console.log("onReady");
-  done();
-});
-
-fastify.addHook("onClose", function manageClose(instance, done) {
-  console.log("onClose");
-  done();
-});
-
-//
 // Fastify routes
 //
 
 fastify.route({
   url: "/",
   method: "GET",
-  handler: function myHandler(req, res) {
+  handler: function myHandler(_req, res) {
     res.send({ hello: "world" });
   },
 });
