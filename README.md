@@ -20,12 +20,12 @@ TODO list:
 ## Start
 
 ```bash
-node starts.cjs
+npm start
 ```
 
 ## App
 
-Go to http://localhost:8080
+Go to http://localhost:3000
 
 ## Refs
 

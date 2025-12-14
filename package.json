@@ -3,12 +3,32 @@
   "version": "0.0.2",
   "description": "A lab on fastify",
   "private": true,
-  "type": "commonjs",
   "keywords": [],
   "license": "MIT",
   "homepage": "https://github.com/szorfein/api-fastify",
   "dependencies": {
-    "fastify": "^5.6.2",
-    "fastify-plugin": "^5.1.0"
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0",
+    "@fastify/autoload": "^6.0.0",
+    "@fastify/sensible": "^6.0.0",
+    "fastify-cli": "^7.4.1"
+  },
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -w -l info -P app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szorfein/api-fastify.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/szorfein/api-fastify/issues"
   }
 }
