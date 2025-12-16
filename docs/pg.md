@@ -2,6 +2,11 @@
 
 Some tricks to hardening postgresql
 
+## init
+
+    sudo -u postgres initdb -D /var/lib/postgres/data
+    sudo systemctl start postgresql
+
 ## new user bob
 
     sudo -u postgres createuser -P bob
@@ -12,6 +17,11 @@ Some tricks to hardening postgresql
 
     sudo -u postgres createdb thisdb
     sudo -u postgres createdb -O bob thisdb
+
+## Connect to database
+
+    sudo -u postgres psql -d thisdb
+    \q
 
 ## give permission
 
@@ -28,11 +38,14 @@ read-only
     $EDITOR /var/lib/psql/data/pg_hba.conf
 
 ```conf
+TYPE  DATABASE        USER            ADDRESS                 METHOD
 local all all // unix socket only
 host all all 127.0.0.1/32 // IPV4
 host all all ::1/128 // IPV6
-host bob all 10.0.0.0/8 // specific user - ip
+host thisdb postgres 10.0.0.0/8 // specific user - ip
 ```
+
+if you can, enable only 'local' connection
 
 ## Enable SSL
 
@@ -45,4 +58,4 @@ Change in options `host` by `hostssl`
 
     hostssl all all 10.0.0.0/8 // specific ip
 
-TODO: Search the last cipher recommanded for pg
+TODO: Search the last cipher recommended for pg https://wiki.mozilla.org/Security/Server_Side_TLS

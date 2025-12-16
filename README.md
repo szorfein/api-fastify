@@ -3,15 +3,20 @@
 TODO list:
 
 - Restful API (no plan to add Graphql)
+- API Keys, config header 'Authorization: Bearer <Token>', bcryptjs
 - RBAC
+- Filter with Joi or Zod
 - JWT Auth, OAuth providers, (T)OTP?, Keycloak?
 - Helmet
-- [Knex](https://github.com/rhzs/fastify-knex), PostgreSql with an ORM?
 - [QS](https://github.com/VanoDevium/fastify-qs) library?
 - Pagination
 - Send Email on Fastify Hook afterCreate?
 - Swagger?
 - Container with Docker
+
+Done:
+
+- \✓ Add Postgres with Sequelize
 
 ## Install
 
@@ -31,3 +36,13 @@ Go to http://localhost:3000
 
 - https://fastify.dev/docs/latest/
 - https://github.com/PacktPublishing/Accelerating-Server-Side-Development-with-Fastify/tree/main
+- https://github.com/JonathanWexler/oreilly-node-projects-code
+
+About simple pg
+
+- https://wanjohi.vercel.app/2021/04/20/Fastify-and-PostgreSQL-REST-API/
+
+About knex
+
+- https://github.com/avanelli/fastify-realworld-example-app/blob/main/lib/plugins/knex/index.js
+- https://medium.com/codingmountain-blog/backend-with-fastify-part-3-setting-up-a-postgresql-database-with-knex-009d238a048a
