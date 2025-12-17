@@ -1,6 +1,6 @@
-# api-fastify
+# 🚀 api-fastify
 
-TODO list:
+🎯TODO list 🎯:
 
 - Restful API (no plan to add Graphql)
 - API Keys, config header 'Authorization: Bearer <Token>', bcryptjs
@@ -16,7 +16,7 @@ TODO list:
 
 Done:
 
-- \✓ Add Postgres with Sequelize
+- ✓ Add Postgres with [Sequelize](https://sequelize.org)
 
 ## Install
 
