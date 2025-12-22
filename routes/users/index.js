@@ -7,30 +7,34 @@ module.exports = async function (fastify, _opts) {
     // On Atac, send Params
     // skip, 12
     // limit, 0
-    // title, bob
-    fastify.get('/', async function (req, reply) {
-        const { skip, limit, title } = req.query;
-        console.log(`skip: ${skip}, limit: ${limit}, title: ${title}`);
-        try {
-            // doc on limit: https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#limits-and-pagination
-            const users = await User.findAll({
-                limit: limit || 10,
-                offset: skip || 0,
-            });
+    fastify.route({
+        method: 'GET',
+        url: '/',
+        schema: {
+            querystring: fastify.getSchema('schema:user:list'),
+            response: {
+                200: fastify.getSchema('schema:user:list:response'),
+            },
+        },
+        handler: async function userList(req, res) {
+            const { skip, limit } = req.query;
+            console.log(`skip: ${skip}, limit: ${limit}`);
+            try {
+                // doc on limit: https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#limits-and-pagination
+                const users = await User.findAll({
+                    limit: limit || 10,
+                    offset: skip || 0,
+                });
 
-            const totalCount = await User.count();
+                const totalCount = await User.count();
 
-            reply.code(200);
-
-            if (users.length === 0) {
-                return { data: 'No user yet' };
-            } else {
-                return { users, totalCount };
+                res.code(200);
+                return { data: users, totalCount };
+            } catch (e) {
+                console.error('Error occurred: ', e.message);
+                res.send(e);
             }
-        } catch (e) {
-            console.error('Error occurred: ', e.message);
-            reply.send(e);
-        }
+        },
     });
 
     // POSTS /users, param are get on req.body
@@ -39,6 +43,12 @@ module.exports = async function (fastify, _opts) {
     fastify.route({
         method: 'POST',
         url: '/',
+        schema: {
+            body: fastify.getSchema('schema:user:create'),
+            response: {
+                201: fastify.getSchema('schema:user:create:response'),
+            },
+        },
         handler: async function createUser(req, res) {
             const email = req.body.email;
 
@@ -63,6 +73,12 @@ module.exports = async function (fastify, _opts) {
     fastify.route({
         method: 'GET',
         url: '/:id',
+        schema: {
+            params: fastify.getSchema('schema:user:read'),
+            response: {
+                200: fastify.getSchema('schema:user:read:response'),
+            },
+        },
         handler: async function readUser(req, res) {
             const id = req.params.id;
             console.log(`requested user id: ${id}`);
@@ -72,7 +88,7 @@ module.exports = async function (fastify, _opts) {
                 res.code(404);
                 return { data: 'Not found' };
             } else {
-                res.code(201);
+                res.code(200);
                 return { data: user };
             }
         },
@@ -84,6 +100,16 @@ module.exports = async function (fastify, _opts) {
     fastify.route({
         method: 'PUT',
         url: '/:id',
+        schema: {
+            // same params from user:read
+            params: fastify.getSchema('schema:user:read'),
+            // but different body
+            body: fastify.getSchema('schema:user:edit:body'),
+            response: {
+                // just return an id like create:response
+                200: fastify.getSchema('schema:user:create:response'),
+            },
+        },
         handler: async function editUser(req, res) {
             const id = req.params.id;
             const email = req.body.email;
@@ -98,8 +124,8 @@ module.exports = async function (fastify, _opts) {
                         },
                     }
                 );
-                res.code(204);
-                return { data: `Successfully updated user id ${id}` };
+                res.code(200); // success code
+                return { id: id };
             } catch (err) {
                 res.code(404);
                 console.log(`error: ${err}`);
@@ -113,6 +139,10 @@ module.exports = async function (fastify, _opts) {
     fastify.route({
         method: 'DELETE',
         url: '/:id',
+        schema: {
+            // same params from user:read
+            params: fastify.getSchema('schema:user:read'),
+        },
         handler: async function deleteUser(req, res) {
             const id = req.params.id;
 
@@ -123,7 +153,6 @@ module.exports = async function (fastify, _opts) {
                     },
                 });
                 res.code(204); // no content response
-                return { success: `user ${id} deleted` };
             } catch (err) {
                 console.log(`error on DELETE user ${id}`);
                 res.code(404);

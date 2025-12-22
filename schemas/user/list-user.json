@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "$id": "schema:user:list",
+    "additionalProperties": false,
+    "properties": {
+        "limit": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0
+        },
+        "skip": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "$id": "schema:user:create",
+    "required": ["email"],
+    "additionalProperties": false,
+    "properties": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        }
+    }
+}

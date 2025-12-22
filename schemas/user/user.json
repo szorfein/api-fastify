@@ -1,0 +1,26 @@
+{
+    "type": "object",
+    "$id": "schema:user",
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "count": {
+            "type": "integer"
+        },
+        "createdAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+        }
+    }
+}

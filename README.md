@@ -4,7 +4,7 @@
 
 - API Keys, config header 'Authorization: Bearer <Token>', bcryptjs
 - RBAC
-- Filter with Joi or Zod
+- Filter with Joi? or Zod?
 - JWT Auth, OAuth providers, (T)OTP?, Keycloak?
 - Helmet
 - [QS](https://github.com/VanoDevium/fastify-qs) library?
@@ -17,6 +17,7 @@ Done:
 - ✓ Restful API (no plan to add Graphql)
 - ✓ Add Postgres with [Sequelize](https://sequelize.org)
 - ✓ Pagination, skip, limit
+- ✓ Control I/O with schema using [ajv](https://ajv.js.org), [ajv-format](https://github.com/ajv-validator/ajv-formats) include in Fastify
 
 ## Install
 

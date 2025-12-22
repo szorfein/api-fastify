@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "$id": "schema:user:list:response",
+    "additionalProperties": false,
+    "properties": {
+        "data": {
+            "type": "array",
+            "items": {
+                "$ref": "schema:user"
+            }
+        },
+        "totalCount": {
+            "type": "integer",
+            "minimum": 0
+        }
+    }
+}

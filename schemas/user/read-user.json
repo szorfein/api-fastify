@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "$id": "schema:user:read",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        }
+    }
+}

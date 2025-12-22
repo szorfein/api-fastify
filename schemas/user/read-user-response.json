@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "$id": "schema:user:read:response",
+    "additionalProperties": false,
+    "properties": {
+        "data": {
+            "$ref": "schema:user"
+        }
+    }
+}
