@@ -2,21 +2,21 @@
 
 🎯TODO list 🎯:
 
-- Restful API (no plan to add Graphql)
 - API Keys, config header 'Authorization: Bearer <Token>', bcryptjs
 - RBAC
 - Filter with Joi or Zod
 - JWT Auth, OAuth providers, (T)OTP?, Keycloak?
 - Helmet
 - [QS](https://github.com/VanoDevium/fastify-qs) library?
-- Pagination
 - Send Email on Fastify Hook afterCreate?
 - Swagger?
 - Container with Docker
 
 Done:
 
+- ✓ Restful API (no plan to add Graphql)
 - ✓ Add Postgres with [Sequelize](https://sequelize.org)
+- ✓ Pagination, skip, limit
 
 ## Install
 
