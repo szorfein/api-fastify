@@ -22,6 +22,18 @@ const User = db.define(
             unique: true,
             allowNull: false,
         },
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        salt: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        blocked: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
         count: {
             type: Sequelize.INTEGER,
             defaultValue: 0,

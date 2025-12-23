@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "$id": "schema:auth:token:header",
+    "properties": {
+        "authorization": {
+            "type": "string",
+            "pattern": "^Bearer [a-zA-Z0-9-._~+/]+=*$",
+            "maxLength": 260,
+            "minLength": 260
+        }
+    }
+}

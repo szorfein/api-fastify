@@ -2,10 +2,10 @@
 
 🎯TODO list 🎯:
 
-- API Keys, config header 'Authorization: Bearer <Token>', bcryptjs
+- API Keys, bcryptjs
 - RBAC
 - Filter with Joi? or Zod?
-- JWT Auth, OAuth providers, (T)OTP?, Keycloak?
+- OAuth providers, (T)OTP?, Keycloak?
 - Helmet
 - [QS](https://github.com/VanoDevium/fastify-qs) library?
 - Send Email on Fastify Hook afterCreate?
@@ -18,6 +18,7 @@ Done:
 - ✓ Add Postgres with [Sequelize](https://sequelize.org)
 - ✓ Pagination, skip, limit
 - ✓ Control I/O with schema using [ajv](https://ajv.js.org), [ajv-format](https://github.com/ajv-validator/ajv-formats) include in Fastify
+- ✓ JWT Authentication with @fastify/jwt, Header `Bearer <token>`
 
 ## Install
 

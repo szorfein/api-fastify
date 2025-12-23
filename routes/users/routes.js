@@ -13,6 +13,7 @@ module.exports = async function (fastify, _opts) {
         schema: {
             querystring: fastify.getSchema('schema:user:list'),
             response: {
+                // The ajv schema automatically remove password and salt from the reply
                 200: fastify.getSchema('schema:user:list:response'),
             },
         },
@@ -34,37 +35,6 @@ module.exports = async function (fastify, _opts) {
                 console.error('Error occurred: ', e.message);
                 res.send(e);
             }
-        },
-    });
-
-    // POSTS /users, param are get on req.body
-    // On Atac, send a Body (JSON)
-    // { "email": "bob@revolt.org" }
-    fastify.route({
-        method: 'POST',
-        url: '/',
-        schema: {
-            body: fastify.getSchema('schema:user:create'),
-            response: {
-                201: fastify.getSchema('schema:user:create:response'),
-            },
-        },
-        handler: async function createUser(req, res) {
-            const email = req.body.email;
-
-            console.log(email);
-
-            // start 0, used to create admin or basic user
-            console.log(`There are ${await User.count()} users`);
-
-            // Create a new user
-            const user = await User.create({ email: email });
-            console.log("User's auto-generated ID:", user.id);
-
-            console.log(req.body);
-
-            res.code(201);
-            return { id: user.id };
         },
     });
 
@@ -107,7 +77,7 @@ module.exports = async function (fastify, _opts) {
             body: fastify.getSchema('schema:user:edit:body'),
             response: {
                 // just return an id like create:response
-                200: fastify.getSchema('schema:user:create:response'),
+                200: fastify.getSchema('schema:auth:credential:response'),
             },
         },
         handler: async function editUser(req, res) {

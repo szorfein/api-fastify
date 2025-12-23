@@ -28,13 +28,26 @@ module.exports = async function (fastify, opts) {
     // ...
     fastify.register(AutoLoad, {
         dir: path.join(__dirname, 'schemas'),
-        indexPattern: /^loader.js$/i
-    })
+        indexPattern: /^loader.js$/i,
+    });
 
     // This loads all plugins defined in routes
     // define your routes in one of these
+
+    // Load all routes.js and *hook.js from routes/
+    // routes/superhook.js
+    // routes/routes.js
+    // routes/users/hook.js
+    // routes/users/routes.js
+
+    // TODO: better name for indexPattern: routes.js? or index.js? or even root.js?
     fastify.register(AutoLoad, {
         dir: path.join(__dirname, 'routes'),
+        indexPattern: /.*routes(\.js|\.cjs)$/i,
+        ignorePattern: /.*\.js/,
+        autoHooksPattern: /.*hooks(\.js|\.cjs)$/i,
+        autoHooks: true,
+        cascadeHooks: true,
         options: Object.assign({}, opts),
     });
 };

@@ -1,12 +1,12 @@
 {
     "type": "object",
-    "$id": "schema:user:create",
-    "required": ["email"],
+    "$id": "schema:auth:token:response",
     "additionalProperties": false,
     "properties": {
-        "email": {
+        "token": {
             "type": "string",
-            "format": "email"
+            "maxLength": 253,
+            "minLength": 253
         }
     }
 }
